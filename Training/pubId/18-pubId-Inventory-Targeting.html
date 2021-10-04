@@ -1,0 +1,91 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://cdn.vidible.tv/prod/2021-06/30/60dc5a4a716a6008d3eefdc5_v1.css">
+    <title>pubId Inventory Targeting</title>
+    <script src="https://cdn.vidible.tv/prod/2021-09/30/6155c92bf1f9444fd827b779_v1.js"></script>
+
+    <script>
+        var pbjs = pbjs || {};
+        pbjs.que = pbjs.que || [];
+        pbjs.setConfig({
+            useBidCache: true,
+            bidderTimeout: 5000,
+            debug: true,
+        });
+
+        pbjs.setConfig({
+            yahoossp: {
+                mode: 'video', // For E2E test you must use either 'banner' OR 'video'
+            }
+        });
+
+        const adUnits = [{
+                code: 'placement',
+                mediaTypes: {
+                    video: {
+                        context: 'outstream',
+                        playerSize: [[300, 250]],
+                        mimes: ['video/mp4','application/javascript'],
+                        api: [2]
+                    }
+                },
+                bids: [{
+                    bidder: 'yahoossp',
+                    params: {
+                        pubId: 'DemoPublisher',
+                        inventoryId: '1234567',         // Optional: Explicitly targeting the RON site/app
+                        placementId: 'Banner-Default'   //Optional: Explicitly targeting a banner placement within selected site
+                    }
+                }]
+            }
+        ]
+</script>
+</head>
+
+<body>
+    <div class="container">
+        <img src="https://s.yimg.com/rz/p/yahoo_homepage_en-US_s_f_p_bestfit_homepage.png" aligh='middle' />
+        <h1 style="color:#7e1fff">pubId Inventory Targeting</h1>
+        <div id="placement" style="max-width:350px; border: 2px solid #7e1fff ;margin: auto"></div>
+        <script>
+            pbjs.que.push(function () {
+                pbjs.addAdUnits(adUnits)
+                pbjs.requestBids({
+                    timeout: 1000,
+                    bidsBackHandler: function (bids) {
+                        console.warn('+++ CLIENT All Bids: ', bids);
+                        try {
+                            let winner = bids['placement'].bids;
+                            console.warn('+++ CLIENT winner: ', winner);
+                            if (winner[0].mediaType === 'banner') {
+                                // Load banner response
+                                const target = document.getElementById('placement');
+                                let frame = document.createElement('iframe');
+                                target.appendChild(frame);
+                                    frame.style.width = '350px';
+                                    frame.style.height = '180px';
+                                    frame.style.border = 'none';
+                                    frame.contentWindow.document.open();
+                                    frame.contentWindow.document.write(winner[0].ad);
+                                    frame.contentWindow.document.close();
+                            } else {
+                                // Load video response
+                                pbjs.renderAd(document, winner[0].adId);
+                            }
+                        } catch (error) {
+                            console.log('Failed to .renderAd', error);
+                        };
+
+                    }
+                })
+            });
+            </script>
+    </div>
+</body>
+
+</html>
+<script>

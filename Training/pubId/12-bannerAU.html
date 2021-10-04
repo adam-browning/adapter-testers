@@ -1,0 +1,85 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="http://cdn.vidible.tv/prod/2021-06/30/60dc5a4a716a6008d3eefdc5_v1.css">
+    <title>Banner (pubId)</title>
+    <script src="https://cdn.vidible.tv/prod/2021-09/30/6155c92bf1f9444fd827b779_v1.js"></script>
+
+    <script>
+        var pbjs = pbjs || {};
+        pbjs.que = pbjs.que || [];
+        pbjs.setConfig({
+            useBidCache: true,
+            bidderTimeout: 5000,
+            debug: true,
+        });
+
+        pbjs.setConfig({
+            yahoossp: {
+                mode: 'banner'
+            }
+        })
+        const adUnits = [{
+                code: 'banner-adUnit',
+                mediaTypes: {
+                    banner: {
+                        sizes: [
+                            [300, 250]
+                        ]
+                    },
+                },
+                bids: [{
+                    bidder: 'yahoossp',
+                    params: {
+                        pubId: 'DemoPublisher',
+                        placementId: 'Banner-Default'
+                    }
+                }]
+            }
+        ];
+
+        pbjs.que.push(function () {
+            pbjs.addAdUnits(adUnits)
+            pbjs.requestBids({
+                timeout: 3000,
+                bidsBackHandler: function (bids) {
+                    console.warn('+++ CLIENT All Bids: ', bids);
+                    // Load banner using iframe
+                    try {
+                        let winner = bids['banner-adUnit'].bids;
+                        console.warn('+++ CLIENT winner: ', winner);
+
+                        const target = document.getElementById('banner-adUnit');
+                        let frame = document.createElement('iframe');
+                        target.appendChild(frame);
+                            frame.style.width = '350px';
+                            frame.style.height = '180px';
+                            frame.style.border = 'none';
+                            frame.contentWindow.document.open();
+                            frame.contentWindow.document.write(winner[0].ad);
+                            frame.contentWindow.document.close();
+                    } catch (error) {
+                        console.log('Failed to .renderAd', error);
+                    };
+                }
+            })
+        });
+    </script>
+</head>
+
+<body>
+    <div class="container">
+        <img src="https://s.yimg.com/rz/p/yahoo_homepage_en-US_s_f_p_bestfit_homepage.png" aligh='middle' />
+        <h1 style="color:#7e1fff">Banner (pubId)</h1>
+            <br>
+
+        <div id="banner-adUnit" style="width:350px; height: 180px; border: 2px solid #7e1fff ;margin: auto">
+        </div>
+    </div>
+</body>
+
+</html>
+<script>

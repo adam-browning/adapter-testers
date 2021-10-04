@@ -1,0 +1,79 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="http://cdn.vidible.tv/prod/2021-06/30/60dc5a4a716a6008d3eefdc5_v1.css">
+    <title>Video (pubId)</title>
+    <script src="https://cdn.vidible.tv/prod/2021-09/30/6155c92bf1f9444fd827b779_v1.js"></script>
+
+    <script>
+        var pbjs = pbjs || {};
+        pbjs.que = pbjs.que || [];
+        pbjs.setConfig({
+            useBidCache: true,
+            bidderTimeout: 5000,
+            debug: true,
+        });
+
+        pbjs.setConfig({
+            yahoossp: {
+                mode: 'video' // 'all', 'video', 'banner' (DEFALUT)
+            }
+        });
+
+        const adUnits = [{
+                code: 'video-adUnit',
+                mediaTypes: {
+                    video: {
+                        context: 'outstream',
+                        playerSize: [
+                            [300, 250]
+                        ],
+                        mimes: ['video/mp4','application/javascript'],
+                        api: [2]
+                    }
+                },
+                bids: [{
+                    bidder: 'yahoossp',
+                    params: {
+                        pubId: 'DemoPublisher',
+                        placementId: 'Banner-Default'
+                    }
+                }]
+            }
+        ]
+    </script>
+</head>
+
+<body>
+    <div class="container">
+        <img src="https://s.yimg.com/rz/p/yahoo_homepage_en-US_s_f_p_bestfit_homepage.png" aligh='middle' />
+        <h1 style="color:#7e1fff">Video (pubId)</h1>
+
+        <div id="video-adUnit" style="width:350px; border: 2px solid #7e1fff ;margin: auto"></div>
+        <script>
+            pbjs.que.push(function () {
+                pbjs.addAdUnits(adUnits)
+                pbjs.requestBids({
+                    timeout: 1000,
+                    bidsBackHandler: function (bids) {
+                        console.warn('+++ CLIENT All Bids: ', bids);
+                        // Load video using outstream renderer
+                        try {
+                            let winner = bids['video-adUnit'].bids;
+                            console.warn('+++ CLIENT winner: ', winner);
+                            pbjs.renderAd(document, winner[0].adId);
+                        } catch (error) {
+                            console.log('Failed to .renderAd', error);
+                        };
+                    }
+                })
+            });
+            </script>
+    </div>
+</body>
+
+</html>
+<script>
