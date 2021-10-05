@@ -22,7 +22,8 @@
                 mode: 'all' // 'all', 'video', 'banner' (DEFALUT)
             }
         });
-
+        
+        // Here we create a configuration variable to use in multiple adUnits - most publishers use this setup method.
         const yahoosspBidderConfig = {
             bidder: 'yahoossp',
             params: {
@@ -42,7 +43,7 @@
                         api: [1]
                     }
                 },
-                bids: [yahoosspBidderConfig]
+                bids: [yahoosspBidderConfig] //reference to configuration variable
             },
             {
                 code: 'banner-adUnit',
@@ -53,7 +54,7 @@
                         ]
                     },
                 },
-                bids: [yahoosspBidderConfig]
+                bids: [yahoosspBidderConfig] //reference to configuration variable
             }
         ]
     </script>
