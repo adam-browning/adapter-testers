@@ -24,7 +24,7 @@
         });
 
         const adUnits = [{
-                code: 'video',
+                code: 'placememt',
                 mediaTypes: {
                     video: {
                         context: 'outstream',
@@ -52,7 +52,7 @@
         <img src="https://s.yimg.com/rz/p/yahoo_homepage_en-US_s_f_p_bestfit_homepage.png" aligh='middle' />
         <h1 style="color:#7e1fff">Video (dcn & pos)</h1>
 
-        <div id="video-adUnit" style="width:300px; border: 2px solid #7e1fff ;margin: auto"></div>
+        <div id="placememt" style="width:300px; border: 2px solid #7e1fff ;margin: auto"></div>
         <script>
             pbjs.que.push(function () {
                 pbjs.addAdUnits(adUnits)
@@ -62,7 +62,7 @@
                         console.warn('+++ CLIENT All Bids: ', bids);
                         // Load video using outstream renderer
                         try {
-                            let winner = bids['video-adUnit'].bids;
+                            let winner = bids['placememt'].bids;
                             console.warn('+++ CLIENT winner: ', winner);
                             pbjs.renderAd(document, winner[0].adId);
                         } catch (error) {
